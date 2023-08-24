@@ -84,5 +84,18 @@ public class Principal {
                                 "Episodio: " + e.getTitulo() +
                                 "Data lançamento: " + e.getDataLancamento().format(formatador)
                 ));
+        Map<Integer, Double> avalicaoesPorTemporada = episodios.stream()
+                .filter(e -> e.getAvalicao() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada,
+                        Collectors.averagingDouble(Episodio::getAvalicao)));
+        System.out.println(avalicaoesPorTemporada);
+
+        DoubleSummaryStatistics est = episodios.stream()
+                .filter(e-> e.getAvalicao()> 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getAvalicao));
+        System.out.println("Média: " +est.getAverage());
+        System.out.println("Melhor episodio: " + est.getMax());
+        System.out.println("Pior espisodio: "+ est.getMin());
+        System.out.println("Quantidade: " + est.getCount());
     }
 }
